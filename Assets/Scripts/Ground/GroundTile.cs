@@ -7,6 +7,7 @@ namespace Ground
     public class GroundTile : MonoBehaviour
     {
         [field: SerializeField] public Transform NextSpawnPointTransform { get; private set; }
+        [SerializeField] private GroundObstacles groundObstacles;
         
         private IObjectPool<GroundTile> _objectPool;
         
@@ -22,6 +23,11 @@ namespace Ground
             yield return new WaitForSeconds(1f);
             
             _objectPool.Release(this);
+        }
+
+        public void ShowObstacles(bool show)
+        {
+            groundObstacles.ShowObstacles(show);
         }
     }
 }
