@@ -46,6 +46,8 @@ namespace Ground
         private void OnReleaseToPool(GroundTile pooledObject)
         {
             pooledObject.gameObject.SetActive(false);
+
+            _objectPool.Get();
         }
         
         private void OnGetFromPool(GroundTile pooledObject)

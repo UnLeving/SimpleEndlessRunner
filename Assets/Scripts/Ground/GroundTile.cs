@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Pool;
+using System.Collections;
 
 namespace Ground
 {
@@ -13,6 +14,13 @@ namespace Ground
 
         public void Deactivate()
         {
+            StartCoroutine(DeactivateWithDelay());
+        }
+        
+        private IEnumerator DeactivateWithDelay()
+        {
+            yield return new WaitForSeconds(1f);
+            
             _objectPool.Release(this);
         }
     }
