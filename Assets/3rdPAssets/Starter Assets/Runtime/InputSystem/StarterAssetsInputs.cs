@@ -12,7 +12,9 @@ namespace StarterAssets
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
-
+		public bool autoMove;
+		public bool alwaysSprint;
+		
 		[Header("Movement Settings")]
 		public bool analogMovement;
 
@@ -41,10 +43,21 @@ namespace StarterAssets
 
 		public void OnSprint(InputValue value)
 		{
-			SprintInput(value.isPressed);
+			SprintInput(alwaysSprint || value.isPressed);
 		}
 #endif
 
+		private void Start()
+		{
+			SprintInput(alwaysSprint);
+		}
+
+		private void Update()
+		{
+			if (!autoMove) return;
+			
+			move.y = 1;
+		}
 
 		public void MoveInput(Vector2 newMoveDirection)
 		{
