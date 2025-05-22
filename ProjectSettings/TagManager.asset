@@ -14,8 +14,8 @@ TagManager:
   - Ground
   - Player
   - PlayerDetector
-  - 
-  - 
+  - Obstacle
+  - OOB
   - 
   - 
   - 

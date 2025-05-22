@@ -9,6 +9,7 @@ namespace Player
         [SerializeField] private float movementSpeed = 5f;
         [SerializeField] private float horizontalSpeed = 5f;
         [SerializeField] private Rigidbody rb;
+        [SerializeField] private GroundChecker groundChecker;
         
         private float _horizontalVelocity;
         private Keyboard _keyboard;
@@ -20,25 +21,34 @@ namespace Player
 
         private void Update()
         {
-            UpdateForwardMovement();
-            
-            _horizontalVelocity = _keyboard.dKey.isPressed ? horizontalSpeed : 
-                _keyboard.aKey.isPressed ? -horizontalSpeed : 0f;
+            //UpdateForwardMovement();
 
-        }
-
-        private void UpdateForwardMovement()
-        {
-            //transform.Translate(Vector3.forward * (movementSpeed * Time.deltaTime));
-            
-            transform.Translate(new Vector3(_horizontalVelocity, 0f, movementSpeed) * Time.deltaTime);
+            CalculateHorizontalVelocity();
         }
         
         private void FixedUpdate()
         {
-            //rb.AddForce(new Vector3(_horizontalVelocity, 0f, 0f), ForceMode.VelocityChange);
+            UpdateForwardMovement();
+
+            //CalculateHorizontalVelocity();
+        }
+
+        private void CalculateHorizontalVelocity()
+        {
+            _horizontalVelocity = _keyboard.dKey.isPressed ? horizontalSpeed : 
+                _keyboard.aKey.isPressed ? -horizontalSpeed : 0f;
+        }
+
+        private void UpdateForwardMovement()
+        {
+            //transform.Translate(new Vector3(_horizontalVelocity, 0f, movementSpeed) * Time.deltaTime);
             
-            //rb.MovePosition(rb.position + new Vector3(_horizontalVelocity, 0f, movementSpeed) * Time.fixedDeltaTime);;
+            rb.MovePosition(rb.position + new Vector3(_horizontalVelocity, 0f, movementSpeed) * Time.deltaTime);
+        }
+
+        private void DoJump()
+        {
+            
         }
     }
 }
