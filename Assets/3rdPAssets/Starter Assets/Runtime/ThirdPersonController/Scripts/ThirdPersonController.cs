@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -70,6 +71,10 @@ namespace StarterAssets
 
         [Tooltip("For locking the camera position on all axis")]
         public bool LockCameraPosition = false;
+        
+        [Header("Collider controller")] 
+        [SerializeField] private float colliderHeightOnSlide = .78f;
+        [SerializeField] private float colliderHeightOnStart;
 
         // cinemachine
         private float _cinemachineTargetYaw;
@@ -148,6 +153,8 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
+            
+            colliderHeightOnStart = _controller.height;
         }
 
         private void Update()
@@ -275,7 +282,7 @@ namespace StarterAssets
             {
                 if (_input.sprint && _input.slide && _input.move != Vector2.zero)
                 {
-                    if(!_animator.IsInTransition(0))
+                    if (!_animator.IsInTransition(0))
                     {
                         _animator.SetTrigger(_animIDSlide);
                     }
@@ -283,7 +290,7 @@ namespace StarterAssets
 
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
                 _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
-                
+
                 _input.slide = false;
             }
         }
@@ -398,6 +405,40 @@ namespace StarterAssets
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center),
                     FootstepAudioVolume);
             }
+        }
+
+        private void OnSlideStart(AnimationEvent animationEvent)
+        {
+            var animationDuration = .2f;
+            
+            StartCoroutine(AnimateHeight(colliderHeightOnStart, colliderHeightOnSlide, animationDuration));
+        }
+
+
+        private void OnSlideEnd(AnimationEvent animationEvent)
+        {
+            var animationDuration = .2f;
+            
+            StartCoroutine(AnimateHeight(colliderHeightOnSlide, colliderHeightOnStart, animationDuration));
+        }
+
+        private IEnumerator AnimateHeight(float startHeight, float endHeight, float duration)
+        {
+            //isAnimating = true;
+            float timer = 0f;
+
+            while (timer < duration)
+            {
+                float t = timer / duration; // Normalized time (0 to 1)
+
+                _controller.height = Mathf.Lerp(startHeight, endHeight, t);
+
+                timer += Time.deltaTime;
+                yield return null; // Wait for the next frame
+            }
+
+            _controller.height = endHeight;
+            //isAnimating = false;
         }
     }
 }
