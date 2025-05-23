@@ -1,9 +1,8 @@
-using Ground;
 using UnityEngine;
 
-namespace Player
+namespace Ground
 {
-    public class PlayerDetector : MonoBehaviour
+    public class GroundTilePlayerDetector : MonoBehaviour
     {
         [SerializeField] private GroundTile groundTile;
         

@@ -20,17 +20,27 @@ namespace StarterAssets
 
         [Header("Mouse Cursor Settings")] public bool cursorLocked = true;
         public bool cursorInputForLook = true;
-
+        private bool _playerHitObstacle;
         private void Start()
         {
             if (!autoRun) return;
             
             sprint = true;
+            
+            Player.Player.OnHitObstacle += PlayerOnOnHitObstacle; 
+        }
+
+        private void PlayerOnOnHitObstacle()
+        {
+            _playerHitObstacle = true;
+            
+            move.y = 0;
         }
 
         private void Update()
         {
             if (!autoRun) return;
+            if (_playerHitObstacle) return;
 
             move.y = 1;
         }

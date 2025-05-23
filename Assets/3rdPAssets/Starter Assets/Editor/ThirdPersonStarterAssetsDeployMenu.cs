@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Text;
+using _3rdPAssets.Starter_Assets.Runtime.ThirdPersonController.Scripts;
 using UnityEditor;
 using UnityEngine;
 
